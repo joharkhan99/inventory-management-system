@@ -1,8 +1,21 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CategoryTable from "../components/CategoryTable";
+import CategoryForm from "../components/CategoryForm";
 
 const Categories = () => {
-  const [categoryName, setCategoryName] = useState("");
+  const [categories, setCategories] = useState([]);
+
+  const fetchCategories = async () => {
+    const request = await fetch(
+      `${process.env.REACT_APP_SERVER_URL}/api/category`
+    );
+    const response = await request.json();
+    setCategories(response);
+  };
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
 
   return (
     <div>
@@ -11,22 +24,8 @@ const Categories = () => {
       </div>
 
       <div>
-        <div className="d-flex my-3 justify-content-start gap-3">
-          <div className="">
-            <input
-              type="text"
-              className="form-control w-auto"
-              placeholder="Enter new Category Name"
-              value={categoryName}
-              onChange={(e) => setCategoryName(e.target.value)}
-            />
-          </div>
-          <div>
-            <button className="btn btn-primary">Add</button>
-          </div>
-        </div>
-
-        <CategoryTable />
+        <CategoryForm categorySubmitted={fetchCategories} />
+        <CategoryTable categories={categories} />
       </div>
     </div>
   );

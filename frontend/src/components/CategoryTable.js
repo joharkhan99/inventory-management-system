@@ -1,6 +1,6 @@
 import React from "react";
 
-const CategoryTable = () => {
+const CategoryTable = ({ categories }) => {
   return (
     <div className="table-responsive">
       <table class="table table-striped">
@@ -18,14 +18,24 @@ const CategoryTable = () => {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td className="bg-transparent">1</td>
-            <td className="bg-transparent">Product 1</td>
-            <td className="d-flex gap-2 bg-transparent">
-              <button className="btn btn-sm btn-info text-white">Edit</button>
-              <button className="btn btn-sm btn-danger">Delete</button>
-            </td>
-          </tr>
+          {categories.length > 0 ? (
+            categories.map((category, index) => (
+              <tr key={index}>
+                <td className="bg-transparent">{index + 1}</td>
+                <td className="bg-transparent">{category.categoryName}</td>
+                <td className="d-flex gap-2 bg-transparent">
+                  <button className="btn btn-sm btn-info text-white">
+                    Edit
+                  </button>
+                  <button className="btn btn-sm btn-danger">Delete</button>
+                </td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan={3}>No categories found</td>
+            </tr>
+          )}
         </tbody>
       </table>
     </div>
