@@ -8,12 +8,12 @@ function Header() {
       path: "/",
     },
     {
-      title: "Categories",
-      path: "/categories",
-    },
-    {
       title: "Suppliers",
       path: "/suppliers",
+    },
+    {
+      title: "Categories",
+      path: "/categories",
     },
   ];
 

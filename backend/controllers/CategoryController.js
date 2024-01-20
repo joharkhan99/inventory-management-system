@@ -4,9 +4,7 @@ const AddCategory = async (req, res) => {
   try {
     const { categoryName } = req.body;
     if (!categoryName) {
-      return res
-        .status(400)
-        .json({ message: "Category name is required", hasError: true });
+      return res.status(400).json({ message: "Category name is required" });
     }
 
     const category = await Category.create({
@@ -17,7 +15,6 @@ const AddCategory = async (req, res) => {
 
     res.status(200).json({
       message: "Category added successfully",
-      hasError: false,
       category,
     });
   } catch (error) {
@@ -36,4 +33,20 @@ const FetchCategories = async (req, res) => {
   }
 };
 
-export { AddCategory, FetchCategories };
+const DeleteCategory = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const category = await Category.findByPk(id);
+    if (!category) {
+      return res.status(400).json({ message: "Category not found" });
+    }
+    await category.destroy();
+    res
+      .status(200)
+      .json({ message: "Category deleted successfully", category });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export { AddCategory, FetchCategories, DeleteCategory };

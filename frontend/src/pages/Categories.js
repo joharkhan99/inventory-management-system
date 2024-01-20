@@ -1,31 +1,31 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import CategoryTable from "../components/CategoryTable";
 import CategoryForm from "../components/CategoryForm";
+import { useSelector } from "react-redux";
 
 const Categories = () => {
-  const [categories, setCategories] = useState([]);
-
-  const fetchCategories = async () => {
-    const request = await fetch(
-      `${process.env.REACT_APP_SERVER_URL}/api/category`
-    );
-    const response = await request.json();
-    setCategories(response);
-  };
-
-  useEffect(() => {
-    fetchCategories();
-  }, []);
+  const error = useSelector((state) => state.category.error);
+  const response = useSelector((state) => state.category.response);
 
   return (
     <div>
       <div>
         <h3>Categories</h3>
       </div>
+      {response && (
+        <div className="alert alert-success" role="alert">
+          {response}
+        </div>
+      )}
 
+      {error && (
+        <div className="alert alert-danger" role="alert">
+          {error}
+        </div>
+      )}
       <div>
-        <CategoryForm categorySubmitted={fetchCategories} />
-        <CategoryTable categories={categories} />
+        <CategoryForm />
+        <CategoryTable />
       </div>
     </div>
   );

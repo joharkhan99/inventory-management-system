@@ -1,6 +1,18 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { deleteCategory, fetchCategories } from "../redux/Slices/categorySlice";
 
-const CategoryTable = ({ categories }) => {
+const CategoryTable = () => {
+  const { categories } = useSelector((state) => state.category);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(fetchCategories());
+  }, []);
+
+  const handleDelete = (categoryId) => {
+    dispatch(deleteCategory({ categoryId }));
+  };
+
   return (
     <div className="table-responsive">
       <table class="table table-striped">
@@ -24,10 +36,12 @@ const CategoryTable = ({ categories }) => {
                 <td className="bg-transparent">{index + 1}</td>
                 <td className="bg-transparent">{category.categoryName}</td>
                 <td className="d-flex gap-2 bg-transparent">
-                  <button className="btn btn-sm btn-info text-white">
-                    Edit
+                  <button
+                    className="btn btn-sm btn-danger"
+                    onClick={() => handleDelete(category.categoryId)}
+                  >
+                    Delete
                   </button>
-                  <button className="btn btn-sm btn-danger">Delete</button>
                 </td>
               </tr>
             ))

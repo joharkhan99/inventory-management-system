@@ -1,13 +1,14 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { addCategory } from "../redux/Slices/categorySlice";
 
-const CategoryForm = ({ categorySubmitted }) => {
+const CategoryForm = () => {
   const [categoryName, setCategoryName] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const dispatch = useDispatch();
 
   const validateForm = () => {
     if (categoryName.trim() === "") {
       alert("Please enter a category name");
-      setIsSubmitting(false);
       return false;
     }
     return true;
@@ -15,36 +16,16 @@ const CategoryForm = ({ categorySubmitted }) => {
 
   const AddCategory = async (e) => {
     e.preventDefault();
-    setIsSubmitting(true);
-    if (validateForm()) {
-      const request = await fetch(
-        `${process.env.REACT_APP_SERVER_URL}/api/category`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ categoryName }),
-        }
-      );
-
-      const response = await request.json();
-
-      if (response.hasError) {
-        alert(response.message);
-        setIsSubmitting(false);
-        return;
-      }
-
-      alert("Category added successfully");
-      setCategoryName("");
-      setIsSubmitting(false);
-      categorySubmitted();
-    }
+    if (!validateForm()) return;
+    dispatch(addCategory({ categoryName }));
+    setCategoryName("");
   };
 
   return (
-    <form className="d-flex my-3 justify-content-start gap-3">
+    <form
+      className="d-flex my-3 justify-content-start gap-3"
+      onSubmit={AddCategory}
+    >
       <div>
         <input
           type="text"
@@ -55,17 +36,8 @@ const CategoryForm = ({ categorySubmitted }) => {
         />
       </div>
       <div>
-        <button
-          className="btn btn-primary"
-          type="submit"
-          onClick={AddCategory}
-          disabled={isSubmitting}
-        >
-          {isSubmitting ? (
-            <span className="spinner-border spinner-border-sm"></span>
-          ) : (
-            "Add"
-          )}
+        <button className="btn btn-primary" type="submit">
+          Add
         </button>
       </div>
     </form>
