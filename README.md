@@ -1,6 +1,6 @@
 # Inventory Management System
 
-A very basic app for Inventory Management system. Fors frontend I have used React with Redux Toolkit. For backend I have used Node JS, Express and Sequelize for MYSQL. Sequelize is npm package that helps in creating Schemas for MYSQL database just like Mongoose for mongodb or like laravel has its own ORM. I could have used Raw Queries, but this way the code maintains the MVC architecture and provides support for schema structures and relations. So it is very helpful and powerful for creating models and relations and its helps us avoid the usage of Raw SQL Queries. WHich can be complex sometimes.
+A very basic app for Inventory Management system. I have usee three tables namely Caregory, Supplier and Product. So a product will have a supplier and a category. For frontend I have used React with Redux Toolkit. For backend I have used Node JS, Express and Sequelize for MYSQL. Sequelize is npm package that helps in creating Schemas for MYSQL database just like Mongoose for mongodb or like laravel has its own ORM. I could have used Raw Queries, but this way the code maintains the MVC architecture and provides support for schema structures and relations. So it is very helpful and powerful for creating models and relations and its helps us avoid the usage of Raw SQL Queries. WHich can be complex sometimes.
 
 ## Installation Guidelines
 
