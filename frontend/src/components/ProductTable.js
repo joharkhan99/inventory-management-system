@@ -1,6 +1,27 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  deleteProduct,
+  fetchProducts,
+  setEditProduct,
+} from "../redux/Slices/productSlice";
 
-const ProductTable = () => {
+const ProductTable = ({ setShowModal }) => {
+  const products = useSelector((state) => state.product.products);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(fetchProducts());
+  }, []);
+
+  const handleDelete = (productId) => {
+    dispatch(deleteProduct({ productId }));
+  };
+
+  const handleEdit = (product) => {
+    dispatch(setEditProduct(product));
+    setShowModal(true);
+  };
+
   return (
     <div className="table-responsive">
       <table class="table table-striped">
@@ -27,17 +48,46 @@ const ProductTable = () => {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td className="bg-transparent">1</td>
-            <td className="bg-transparent">Product 1</td>
-            <td className="bg-transparent">100</td>
-            <td className="bg-transparent">Category 1</td>
-            <td className="bg-transparent">Supplier 1</td>
-            <td className="d-flex gap-2 bg-transparent">
-              <button className="btn btn-sm btn-info text-white">Edit</button>
-              <button className="btn btn-sm btn-danger">Delete</button>
-            </td>
-          </tr>
+          {products.length > 0 ? (
+            products.map((product, index) => (
+              <tr key={index}>
+                <td className="bg-transparent">{index + 1}</td>
+                <td className="bg-transparent">{product.productName}</td>
+
+                <td className="bg-transparent">{product.productPrice}</td>
+
+                <td className="bg-transparent">
+                  {product.category.categoryName}
+                </td>
+
+                <td className="bg-transparent">
+                  {product.supplier.supplierName}
+                </td>
+
+                <td className="d-flex gap-2 bg-transparent">
+                  <button
+                    className="btn btn-sm btn-info"
+                    onClick={() => handleEdit(product)}
+                  >
+                    Edit
+                  </button>
+
+                  <button
+                    className="btn btn-sm btn-danger"
+                    onClick={() => handleDelete(product.productId)}
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan="6" className="bg-transparent">
+                No products found
+              </td>
+            </tr>
+          )}
         </tbody>
       </table>
     </div>

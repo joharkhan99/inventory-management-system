@@ -1,5 +1,7 @@
 import connectToDB from "../config/db.js";
 import { DataTypes } from "sequelize";
+import Category from "./Category.model.js";
+import Supplier from "./Supplier.model.js";
 
 const sequelize = await connectToDB();
 
@@ -47,6 +49,10 @@ const Product = sequelize.define(
     timestamps: true,
   }
 );
+
+// relationship between product and category
+Product.belongsTo(Category, { foreignKey: "categoryID", as: "category" });
+Product.belongsTo(Supplier, { foreignKey: "supplierID", as: "supplier" });
 
 // sync the product table with the database
 Product.sync()
